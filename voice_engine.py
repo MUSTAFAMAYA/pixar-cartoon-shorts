@@ -1,8 +1,8 @@
 """
-Expressive Storytelling Voice Engine
-Synthesizes warm, engaging Hindi & Urdu narration using Microsoft Edge Neural TTS.
-Primary Voice: 'hi-IN-MadhurNeural' (Warm, friendly Disney-style storyteller)
-Fallback Voice: 'ur-PK-AsadNeural'
+Expressive Female Storytelling Voice Engine
+Synthesizes sweet, engaging, warm female narration using Microsoft Edge Neural TTS.
+Primary Voice: 'hi-IN-SwaraNeural' (Sweet, warm, expressive female Disney-style storyteller)
+Fallback Voice: 'ur-PK-UzmaNeural' (Gentle female Urdu storyteller)
 Captures real-time word boundary events (WordBoundary) so typography can animate
 in exact sync with the narration voice!
 """
@@ -12,7 +12,7 @@ import os
 import re
 import edge_tts
 
-VOICE_NAME = os.getenv("STORY_VOICE", "hi-IN-MadhurNeural")
+VOICE_NAME = os.getenv("STORY_VOICE", "hi-IN-SwaraNeural")
 
 
 def clean_text(text):
@@ -22,7 +22,7 @@ def clean_text(text):
 
 async def synthesize_story_voice(text, output_path="story_audio.mp3"):
     cleaned_text = clean_text(text)
-    print(f"[*] Synthesizing expressive Pixar story narration with {VOICE_NAME}...")
+    print(f"[*] Synthesizing expressive female Pixar story narration with {VOICE_NAME}...")
 
     word_timings = []
     try:
@@ -40,8 +40,8 @@ async def synthesize_story_voice(text, output_path="story_audio.mp3"):
                         "end": start_sec + dur_sec,
                     })
     except Exception as e:
-        print(f"[Warning] Primary voice ({VOICE_NAME}) stream notice: {e}. Trying fallback voice...")
-        fallback_voice = "ur-PK-AsadNeural"
+        print(f"[Warning] Primary female voice ({VOICE_NAME}) stream notice: {e}. Trying fallback female voice...")
+        fallback_voice = "ur-PK-UzmaNeural"
         try:
             fallback = edge_tts.Communicate(cleaned_text, fallback_voice)
             with open(output_path, "wb") as f:
