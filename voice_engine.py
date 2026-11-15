@@ -12,7 +12,7 @@ import os
 import re
 import edge_tts
 
-VOICE_NAME = os.getenv("STORY_VOICE", "hi-IN-SwaraNeural")
+VOICE_NAME = os.getenv("STORY_VOICE", "ur-PK-UzmaNeural")
 
 
 def clean_text(text):

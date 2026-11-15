@@ -19,7 +19,7 @@ from dotenv import load_dotenv
 from story_source import get_next_story, build_story_script
 from voice_engine import generate_story_audio
 from typography_engine import generate_pixar_typography, get_audio_duration
-from pixar_visual_engine import generate_pixar_story_video
+from lip_sync_engine import generate_character_video
 from video_engine import render_pixar_video
 from uploader_youtube import upload_youtube_short
 from uploader_facebook import upload_facebook_reel
@@ -51,10 +51,10 @@ def run_pixar_pipeline(preview_only=False, platforms=("instagram", "facebook", "
     subtitles_file = "story_subtitles.ass"
     generate_pixar_typography(script_data, audio_file, subtitles_file, word_timings=word_timings)
 
-    # Step 4: 3D Pixar Multi-Shot Cinematic Visuals (Islamishortsai style)
-    print("\n[Step 4] Generating 4-shot 3D Pixar cinematic visual sequence with crossfades...")
+    # Step 4: 3D Pixar Little Muslim Girl Lip-Sync & Cinematic Video
+    print("\n[Step 4] Animating 3D Pixar character with Urdu voice lip sync & cinematic visuals...")
     bg_video = "pixar_background.mp4"
-    generate_pixar_story_video(script_data["shots_prompts"], output_video_path=bg_video, target_duration=audio_dur)
+    generate_character_video(script_data, audio_file, output_video_path=bg_video, target_duration=audio_dur)
 
     # Step 5: Render Video with Fairytale Soundtrack
     print("\n[Step 5] Rendering final Pixar Cartoon Short...")
