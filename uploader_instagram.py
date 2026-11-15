@@ -100,12 +100,21 @@ def upload_instagram_reel(video_path, caption):
 
         thumbnail_to_use = thumb_file if thumb_file.exists() else None
 
-        # Upload as Reel clip
-        media = cl.clip_upload(
-            video_file,
-            caption=caption,
-            thumbnail=thumbnail_to_use,
-        )
+        # Upload as Reel clip with Facebook auto-share enabled
+        try:
+            media = cl.clip_upload(
+                video_file,
+                caption=caption,
+                thumbnail=thumbnail_to_use,
+                share_to_facebook=True,
+            )
+        except Exception as fb_err:
+            print(f"[*] Standard Reel upload notice: {fb_err}. Uploading standard clip...")
+            media = cl.clip_upload(
+                video_file,
+                caption=caption,
+                thumbnail=thumbnail_to_use,
+            )
 
         media_id = getattr(media, "id", None) or getattr(media, "pk", str(media))
         print(f"[SUCCESS] Instagram Reel posted successfully! ID: {media_id}")
