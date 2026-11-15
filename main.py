@@ -20,7 +20,6 @@ from story_source import get_next_story, build_story_script
 from voice_engine import generate_story_audio
 from typography_engine import generate_pixar_typography, get_audio_duration
 from pixar_visual_engine import generate_pixar_story_video
-from talking_face_engine import create_talking_character_video
 from video_engine import render_pixar_video
 from uploader_youtube import upload_youtube_short
 from uploader_facebook import upload_facebook_reel
@@ -52,10 +51,10 @@ def run_pixar_pipeline(preview_only=False, platforms=("instagram", "facebook", "
     subtitles_file = "story_subtitles.ass"
     generate_pixar_typography(script_data, audio_file, subtitles_file, word_timings=word_timings)
 
-    # Step 4: 3D Pixar Talking Character & Lip-Sync Animation
-    print("\n[Step 4] Animating 3D Pixar character with real-time lip sync & eye blinks...")
+    # Step 4: 3D Pixar Multi-Shot Cinematic Visuals (Islamishortsai style)
+    print("\n[Step 4] Generating 4-shot 3D Pixar cinematic visual sequence with crossfades...")
     bg_video = "pixar_background.mp4"
-    create_talking_character_video(script_data["character_theme"], audio_file, output_video_path=bg_video)
+    generate_pixar_story_video(script_data["shots_prompts"], output_video_path=bg_video, target_duration=audio_dur)
 
     # Step 5: Render Video with Fairytale Soundtrack
     print("\n[Step 5] Rendering final Pixar Cartoon Short...")

@@ -1,13 +1,13 @@
 """
-Pixar Cartoon Style Animated Typography Engine
-Renders vibrant, playful 3D cartoon styled dual subtitles:
-- Header: '✦ Disney/Pixar 3D Story ✦' in golden cartoon style
-- Topic Pill: '[ Title in Hindi | Title in Roman ]'
+3D Pixar Islamic Habits Animated Typography Engine
+Renders vibrant, modern dual subtitles formatted for 9:16 Islamic Reels:
+- Header: '✦ रोज़मर्रा की सुन्नतें ✦' in royal gold
+- Topic Pill: '[ Title in Hindi | Title in Roman English ]'
 - Dual Synchronized Subtitles:
-    - Line 1: Bold Hindi text with thick cartoon outline & soft shadow
-    - Line 2: Vibrant cartoon golden-yellow Roman English/Urdu transliteration
+    - Line 1: Bold Hindi text with dark outline & soft shadow
+    - Line 2: Vibrant golden-yellow Roman English transliteration
     - Animated elastic bounce pop (\fscx108\fscy108 -> 100%) in exact real-time sync with speech!
-- Moral / सीख at the bottom!
+- Sunnah Rule / सीख at the bottom!
 """
 
 import subprocess
@@ -20,11 +20,11 @@ ScaledBorderAndShadow: yes
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: PixarHeader,Arial Black,64,&H0032CDFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,6,3,2,60,60,1540,1
-Style: PixarTopic,Arial Black,50,&H00FFFFFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,5,2,2,60,60,1440,1
-Style: CartoonHindi,Arial Black,74,&H00FFFFFF,&H000000FF,&H00000000,&H90000000,-1,0,0,0,100,100,0,0,1,7,4,2,70,70,880,1
-Style: CartoonRoman,Arial Black,54,&H0032CDFF,&H000000FF,&H00000000,&H90000000,-1,0,0,0,100,100,0,0,1,6,3,2,70,70,680,1
-Style: PixarMoral,Arial Black,48,&H0000FFFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,5,3,2,80,80,360,1
+Style: PixarHeader,Nirmala UI,64,&H0042D4F5,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,6,3,2,60,60,1540,1
+Style: PixarTopic,Nirmala UI,50,&H00FFFFFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,5,2,2,60,60,1440,1
+Style: CartoonHindi,Nirmala UI,72,&H00FFFFFF,&H000000FF,&H00000000,&H90000000,-1,0,0,0,100,100,0,0,1,7,4,2,70,70,880,1
+Style: CartoonRoman,Arial,52,&H0042D4F5,&H000000FF,&H00000000,&H90000000,-1,0,0,0,100,100,0,0,1,6,3,2,70,70,680,1
+Style: PixarMoral,Nirmala UI,48,&H0000FFFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,5,3,2,80,80,360,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
@@ -69,7 +69,7 @@ def generate_pixar_typography(
     # 1. Top Header with playful pop
     header_anim = r"{\fad(400,0)\t(0,250,\fscx106\fscy106)\t(250,500,\fscx100\fscy100)}"
     lines.append(
-        f"Dialogue: 0,0:00:00.00,{total_time_str},PixarHeader,,0,0,0,,{header_anim}✦ Disney/Pixar 3D Story ✦"
+        f"Dialogue: 0,0:00:00.00,{total_time_str},PixarHeader,,0,0,0,,{header_anim}✦ रोज़मर्रा की सुन्नतें ✦"
     )
 
     # 2. Topic Pill
@@ -81,7 +81,7 @@ def generate_pixar_typography(
 
     # 3. Bottom Moral Highlight
     moral_anim = r"{\fad(500,0)}"
-    moral_str = f"💡 सीख: {story_info['moral_hindi']}"
+    moral_str = f"💡 सुन्नत: {story_info['moral_hindi']}"
     lines.append(
         f"Dialogue: 0,0:00:00.00,{total_time_str},PixarMoral,,0,0,0,,{moral_anim}{moral_str}"
     )
@@ -104,7 +104,7 @@ def generate_pixar_typography(
     else:
         time_per_sub = duration / num_subs
         timing_slices = [
-            (idx * time_per_sub, min((idx + 1) * time_per_sub, duration))
+            (idx * time_per_sub, min((idx + 1) * time_per_chunk if 'time_per_chunk' in locals() else (idx + 1) * time_per_sub, duration))
             for idx in range(num_subs)
         ]
 
@@ -126,5 +126,5 @@ def generate_pixar_typography(
     with open(output_ass_path, "w", encoding="utf-8") as f:
         f.write(ASS_HEADER + "\n".join(lines))
 
-    print(f"[+] Pixar cartoon animated subtitles generated at {output_ass_path}")
+    print(f"[+] Islamic habits animated subtitles generated at {output_ass_path}")
     return output_ass_path
