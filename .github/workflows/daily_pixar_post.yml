@@ -2,12 +2,16 @@ name: Auto Generate & Post Daily Pixar 3D Cartoon Shorts
 
 on:
   schedule:
-    # Post 1: 08:30 AM IST (03:00 UTC) - Morning Commute & Story Scroll
-    - cron: '0 3 * * *'
-    # Post 2: 02:00 PM IST (08:30 UTC) - Afternoon Lunch Break Peak
-    - cron: '30 8 * * *'
-    # Post 3: 09:00 PM IST (15:30 UTC) - Evening Family & Bedtime Prime Time
-    - cron: '30 15 * * *'
+    # 1. Fajr (Dawn / Morning): 06:00 AM IST (00:30 UTC)
+    - cron: '30 0 * * *'
+    # 2. Dhuhr / Zohar (Midday): 01:30 PM IST (08:00 UTC)
+    - cron: '0 8 * * *'
+    # 3. Asr (Late Afternoon): 05:00 PM IST (11:30 UTC)
+    - cron: '30 11 * * *'
+    # 4. Maghrib (Sunset): 06:30 PM IST (13:00 UTC)
+    - cron: '0 13 * * *'
+    # 5. Isha (Night / Bedtime): 08:45 PM IST (15:15 UTC)
+    - cron: '15 15 * * *'
   workflow_dispatch:
 
 jobs:

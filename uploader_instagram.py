@@ -118,6 +118,15 @@ def upload_instagram_reel(video_path, caption):
 
         media_id = getattr(media, "id", None) or getattr(media, "pk", str(media))
         print(f"[SUCCESS] Instagram Reel posted successfully! ID: {media_id}")
+
+        # Also share to Instagram Story so all followers see it in the Story tray at the top
+        try:
+            print("[*] Sharing Reel to Instagram Story for all followers...")
+            cl.video_upload_to_story(video_file)
+            print("[+] Reel shared to your Instagram Story!")
+        except Exception as story_err:
+            print(f"[*] Story share notice: {story_err}")
+
         return media_id
     except Exception as e:
         print(f"[Notice] Instagram clip_upload notice: {e}")
