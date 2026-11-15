@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.mp4
+*.mp3
+*.ass
+*.jpg
+*.png
+.env
+ig_session.json
+token.json
+client_secrets.json
