@@ -11,18 +11,25 @@ import random
 import subprocess
 import urllib.parse
 import requests
-from pixar_visual_engine import generate_pixar_story_video
+from pixar_visual_engine import generate_pixar_story_video, generate_with_google_imagen
 
 
 def download_character_portrait(prompt, output_image_path="char_base.jpg"):
-    print(f"[*] Generating 3D Pixar Character portrait: '{prompt[:65]}...'")
-    encoded = urllib.parse.quote(prompt)
+    # Tier 1: Google Imagen 3
+    img = generate_with_google_imagen(prompt, output_image_path)
+    if img and os.path.exists(output_image_path) and os.path.getsize(output_image_path) > 5000:
+        return output_image_path
+
+    # Tier 2: Pollinations AI
+    print(f"[*] Generating 3D Pixar Character portrait via Pollinations: '{prompt[:65]}...'")
+    short_prompt = prompt[:280]
+    encoded = urllib.parse.quote(short_prompt)
     seed = random.randint(1000, 999999)
-    url = f"https://image.pollinations.ai/prompt/{encoded}?width=1080&height=1920&model=flux&seed={seed}&nologo=true"
+    url = f"https://image.pollinations.ai/prompt/{encoded}?width=1080&height=1920&model=turbo&seed={seed}&nologo=true"
 
     try:
-        res = requests.get(url, timeout=35)
-        if res.status_code == 200:
+        res = requests.get(url, timeout=50)
+        if res.status_code == 200 and len(res.content) > 5000:
             with open(output_image_path, "wb") as f:
                 f.write(res.content)
             print(f"[+] Downloaded 3D character portrait to {output_image_path}")
@@ -32,7 +39,7 @@ def download_character_portrait(prompt, output_image_path="char_base.jpg"):
 
     cmd = [
         "ffmpeg", "-y", "-f", "lavfi",
-        "-i", "color=c=0x1a2b4c:s=1080x1920:d=1",
+        "-i", "color=c=0x2b1055:s=1080x1920:d=1",
         "-vframes", "1", output_image_path,
     ]
     subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
