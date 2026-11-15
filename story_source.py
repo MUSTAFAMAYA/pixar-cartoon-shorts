@@ -191,6 +191,7 @@ def build_story_script(story):
         "title_roman": story["title_roman"],
         "moral_hindi": story["moral_hindi"],
         "moral_roman": story["moral_roman"],
+        "character_theme": story.get("character_theme", "cute 3D Pixar animated character"),
         "shots_prompts": story["shots_prompts"],
         "spoken_text": story["spoken_text"],
         "subtitles_hindi": story["subtitles_hindi"],
