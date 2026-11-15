@@ -28,7 +28,7 @@ from uploader_instagram import upload_instagram_reel
 load_dotenv()
 
 
-def run_pixar_pipeline(preview_only=False, platforms=("facebook", "youtube")):
+def run_pixar_pipeline(preview_only=False, platforms=("instagram", "facebook", "youtube")):
     print("\n========================================================")
     print("🎨 STARTING DISNEY-PIXAR 3D CARTOON STORY AUTOMATION")
     print("========================================================\n")
