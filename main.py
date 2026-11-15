@@ -22,12 +22,13 @@ from typography_engine import generate_pixar_typography, get_audio_duration
 from pixar_visual_engine import generate_pixar_story_video
 from video_engine import render_pixar_video
 from uploader_youtube import upload_youtube_short
+from uploader_facebook import upload_facebook_reel
 from uploader_instagram import upload_instagram_reel
 
 load_dotenv()
 
 
-def run_pixar_pipeline(preview_only=False, platforms=("youtube", "instagram")):
+def run_pixar_pipeline(preview_only=False, platforms=("facebook", "youtube")):
     print("\n========================================================")
     print("🎨 STARTING DISNEY-PIXAR 3D CARTOON STORY AUTOMATION")
     print("========================================================\n")
@@ -72,6 +73,12 @@ def run_pixar_pipeline(preview_only=False, platforms=("youtube", "instagram")):
         return
 
     print("\n[Step 6] Publishing to Social Media...")
+    if "facebook" in platforms:
+        try:
+            upload_facebook_reel(final_video, caption=script_data["caption"])
+        except Exception as e:
+            print(f"[!] Facebook notice: {e}")
+
     if "youtube" in platforms:
         try:
             upload_youtube_short(
