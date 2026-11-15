@@ -34,8 +34,8 @@ def get_instagram_client():
     cl = Client()
     cl.delay_range = [2, 5]
 
-    # Check any session secret: INSTAGRAM_SESSION_ID or IG_SESSION_JSON
-    session_val = (os.getenv("INSTAGRAM_SESSION_ID") or os.getenv("IG_SESSION_JSON") or "").strip()
+    # Check any session secret: INSTAGRAM_SESSION_ID, FACEBOOK_SESSION_ID, or IG_SESSION_JSON
+    session_val = (os.getenv("INSTAGRAM_SESSION_ID") or os.getenv("FACEBOOK_SESSION_ID") or os.getenv("IG_SESSION_JSON") or "").strip()
     if session_val:
         if session_val.startswith("{") and session_val.endswith("}"):
             try:
