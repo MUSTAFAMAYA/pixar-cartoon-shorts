@@ -86,10 +86,12 @@ def generate_pixar_story_video(shots_prompts=None, output_video_path="pixar_back
     motions = ["zoom_in", "pan_right", "zoom_out", "tilt_up"]
     clip_files = []
 
-    # Check for real moving video clips first
+    # Check for real moving video clips first (User 5 videos + Fresh clips)
     local_videos = []
     if os.path.exists(VIDEOS_DIR):
         local_videos = [os.path.join(VIDEOS_DIR, f) for f in os.listdir(VIDEOS_DIR) if f.endswith(".mp4")]
+        # Randomize selection so every video has fresh diverse background motion
+        random.shuffle(local_videos)
 
     # Check for static high-definition backgrounds
     bg_files = []
