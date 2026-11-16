@@ -4,7 +4,7 @@ Features:
 1. Real 1080x1920 9:16 vertical Islamic & Natural moving video clips from assets/videos/
 2. Curated high-definition 1080x1920 9:16 vertical Islamic & Natural theme backgrounds from assets/backgrounds/
 3. Applies smooth 3D Ken Burns cinematic motion (slow zoom & pan) on static backgrounds
-4. Seamless crossfade transitions across multi-shot sequences
+4. Seamless concatenation across multi-shot sequences
 5. Guaranteed 100% offline availability with ZERO API failures, timeouts, or rate limits!
 """
 
@@ -12,18 +12,16 @@ import os
 import random
 import shutil
 import subprocess
-import urllib.parse
-import requests
 
 ASSETS_DIR = os.path.join(os.path.dirname(__file__), "assets", "backgrounds")
 VIDEOS_DIR = os.path.join(os.path.dirname(__file__), "assets", "videos")
 
 
 def prepare_video_clip(src_video, output_clip_path, duration=8):
-    """Trims, loops, and formats a source video to strict 1080x1920 vertical 9:16 MP4."""
+    """Trims, loops, and formats a source video to strict 1080x1920 vertical 30fps MP4."""
     cmd = [
         "ffmpeg", "-y", "-stream_loop", "-1", "-i", src_video,
-        "-vf", "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920",
+        "-vf", "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=30,format=yuv420p",
         "-t", str(duration),
         "-c:v", "libx264", "-preset", "fast", "-crf", "20",
         "-an",
@@ -70,7 +68,7 @@ def create_motion_clip(image_path, output_clip_path, motion_type="zoom_in", dura
         "-y",
         "-loop", "1",
         "-i", image_path,
-        "-vf", f"{vf},format=yuv420p",
+        "-vf", f"{vf},fps=30,format=yuv420p",
         "-t", str(duration),
         "-c:v", "libx264",
         "-preset", "fast",
@@ -123,27 +121,16 @@ def generate_pixar_story_video(shots_prompts=None, output_video_path="pixar_back
             create_motion_clip(src_img, clip_file, motion_type=motions[i % len(motions)], duration=shot_dur)
             clip_files.append(clip_file)
 
-    print("[*] Stitching video scenes with cinematic crossfade transitions...")
-    d = 1.0
-    t1 = shot_dur - d
-    t2 = t1 + shot_dur - d
-
-    filter_graph = (
-        f"[0:v][1:v]xfade=transition=fade:duration={d}:offset={t1}[v01];"
-        f"[v01][2:v]xfade=transition=fade:duration={d}:offset={t2}[vfinal]"
-    )
+    print(f"[*] Concatenating {len(clip_files)} video scenes...")
+    concat_txt = "concat_list.txt"
+    with open(concat_txt, "w") as f:
+        for c in clip_files:
+            f.write(f"file '{c}'\n")
 
     cmd = [
-        "ffmpeg",
-        "-y",
-        "-i", clip_files[0],
-        "-i", clip_files[1],
-        "-i", clip_files[2],
-        "-filter_complex", filter_graph,
-        "-map", "[vfinal]",
-        "-c:v", "libx264",
-        "-preset", "fast",
-        "-crf", "20",
+        "ffmpeg", "-y", "-f", "concat", "-safe", "0",
+        "-i", concat_txt,
+        "-c:v", "libx264", "-preset", "fast", "-crf", "20",
         "-pix_fmt", "yuv420p",
         output_video_path,
     ]
